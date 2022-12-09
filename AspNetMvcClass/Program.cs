@@ -26,7 +26,7 @@ namespace AspNetMvcClass
                 config.AccessDeniedPath = "/User/Login";
             });
 
-
+            builder.Services.AddSession();
 
 
             var app = builder.Build();
@@ -47,7 +47,7 @@ namespace AspNetMvcClass
             app.UseStaticFiles();            
             app.UseRouting();
 
-            
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllerRoute(

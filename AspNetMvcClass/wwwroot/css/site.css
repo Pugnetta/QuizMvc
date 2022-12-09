@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+#countdown {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100px;
+}
