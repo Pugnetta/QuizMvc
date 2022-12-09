@@ -1,0 +1,30 @@
+﻿@model Int32
+@{
+    ViewData["Title"] = "FinalScore";
+ }
+<style>
+    .score-page {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .score-card {
+        margin: 20px auto;
+        max-width: 500px;
+    }
+
+    .score-card-header {
+        font-size: 2em;
+        font-weight: bold;
+        color: #212529;
+    }
+</style>
+<h1 class="text-center">Final Score</h1>
+<div class="score-page">
+    <div class="card score-card">
+        <div class="card-header score-card-header">
+           @Model
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,42 @@
+﻿@model AspNetMvcClass.Models.AddDomandaViewModel
+
+@{
+    ViewData["Title"] = "Aggiungi";
+}
+
+<div class="text-center">
+<h1>Aggiungi domande al db</h1>
+</div>
+<form method="post" action="Add">
+    <div class="mb-3">
+        <label for="" class="form-label">Domanda:</label>
+        <input type="text" placeholder="Inserisci domanda" class="form-control" asp-for="Question">
+        <span class="text-danger" asp-validation-for="Question"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Risposta1:</label>
+        <input type="text" placeholder="Inserisci Risposta" class="form-control" asp-for="Risposta1">
+        <span class="text-danger" asp-validation-for="Risposta1"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Risposta2:</label>
+        <input type="text" placeholder="Inserisci Risposta" class="form-control" asp-for="Risposta2">
+        <span class="text-danger" asp-validation-for="Risposta2"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Risposta3:</label>
+        <input type="text" placeholder="Inserisci Risposta" class="form-control" asp-for="Risposta3">
+        <span class="text-danger" asp-validation-for="Risposta3"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Risposta4:</label>
+        <input type="text" placeholder="Inserisci Risposta" class="form-control" asp-for="Risposta4">
+        <span class="text-danger" asp-validation-for="Risposta4"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Risposta Esatta:</label>
+        <input type="text" placeholder="Inserisci Risposta Esatta" class="form-control" asp-for="RispostaEsatta">
+        <span class="text-danger" asp-validation-for="RispostaEsatta"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Crea Domanda</button>
+</form>

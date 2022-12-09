@@ -1,0 +1,67 @@
+﻿@{
+	ViewData["Title"] = "QuizMenu";
+
+}
+<style>
+    h1 {
+        font-size: 38px;
+        text-align: center;
+    }
+
+    .m-bottom {
+        margin-bottom: 100px;
+    }
+
+    .tall-boy {
+        height: 50%
+    }
+
+    .big-btn {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        display: block;
+        overflow: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 200px;
+        grid-gap: 10px;
+    }   
+
+    .big-btn:hover {
+        cursor: pointer;
+        color: #3498db;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+</style>
+<body class="bg-img-ambiente2">
+    <header>
+        <div class="container m-bottom">
+            <h1 class="text-light">Metti alla prova le tue conoscenze</h1>
+            <h1 class="text-light">ed ottieni straordinari <strong>PREMI!!</strong></h1>
+        </div>
+    </header>
+    <div class="m-bottom"></div>
+    <div class="wrapper">
+        <div><button class="big-btn bg-img-ambiente">Quiz 1</button></div>
+        <div><button class="big-btn bg-img-ambiente">Quiz 2</button></div>
+        <div><button class="big-btn bg-img-ambiente">Quiz 3</button></div>
+        <div><button class="big-btn bg-img-ambiente">Quiz 4</button></div>
+    </div>
+</body>
+@section Scripts {
+<script>
+$('.big-btn').on('click', function() {
+window.location.href = '@Url.Action("Start", "Quiz")';
+});
+</script>
+}
+
+
+}

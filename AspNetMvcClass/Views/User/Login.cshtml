@@ -1,0 +1,33 @@
+﻿@model AspNetMvcClass.Models.ViewModels.LoginViewModel
+@{
+	ViewData["Title"] = "Login";
+}
+<div class="container mt-5">
+	<div class="row justify-content-center align-items-center">
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Login</h1>
+			<form method="post" action="Login">
+				<div class="mb-3">
+					<div asp-validation-summary="All" class="text-danger"> </div>
+					<div class="mb-3">
+						<label for="" class="form-label">Email</label>
+						<input type="text" placeholder="Inserisci Email" class="form-control" asp-for="Email">
+						<span class="text-danger" asp-validation-for="Email"></span>
+					</div>
+					<div class="mb-3">
+						<label for="" class="form-label">Password</label>
+						<input type="password" placeholder="Inserisci Password" class="form-control" asp-for="Password">
+						<span class="text-danger" asp-validation-for="Password"></span>
+					</div>
+					<div class="mb-3 form-check">
+						<input type="checkbox" asp-for="RememberMe" class="form-check-input"/>
+						<label for="" class="form-check-label" asp-for="RememberMe">Remember me?</label>
+					</div>
+					<div class="mb-3">
+						<button type="submit" class="btn btn-primary">Login</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

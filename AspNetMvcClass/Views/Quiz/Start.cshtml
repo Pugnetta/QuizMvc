@@ -1,0 +1,45 @@
+﻿@model AspNetMvcClass.Models.Domain.Domanda
+
+@{
+	ViewBag.Title = "Quiz";
+}
+<style>
+  .quiz-game-page {
+    padding: 20px;
+  }
+
+  .quiz-game-card {
+    margin: 20px 0;
+  }
+</style>
+
+<div class="quiz-game-page">
+  <div class="card quiz-game-card">
+    <div class="card-header">
+      <h3>@Model.Question</h3>
+    </div>
+    <div class="card-body">
+      <form method="post" class="form">
+               
+              <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectedAnswer" id="Risposta1" value=@Model.Risposta1>
+                <label class="form-check-label">@Model.Risposta1</label>
+              </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectedAnswer" id="Risposta2" value=@Model.Risposta2>
+                    <label class="form-check-label">@Model.Risposta2</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectedAnswer" id="Risposta3" value=@Model.Risposta3>
+                    <label class="form-check-label">@Model.Risposta3</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectedAnswer" id="Risposta4" value=@Model.Risposta4>
+                    <label class="form-check-label">@Model.Risposta4</label>
+                </div>
+                
+        <button type="submit" class="btn btn-primary">Ok</button>
+      </form>
+    </div>
+  </div>
+</div>

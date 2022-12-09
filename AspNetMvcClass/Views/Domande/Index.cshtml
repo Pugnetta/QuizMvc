@@ -1,0 +1,29 @@
+﻿@model List<AspNetMvcClass.Models.Domain.Domanda>
+
+@{
+	 ViewData["Title"] = "Domande";
+}
+
+<h1>Domande</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Domanda</th>
+			<th>Risposta Esatta</th>
+			<th></th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var domanda in Model)
+		{
+			<tr>
+				<td>@domanda.Id</td>
+				<td>@domanda.Question</td>				
+				<td>@domanda.RispostaEsatta</td>
+				<td class="text-end">@Html.ActionLink("Modifica", "View", domanda)</td>
+			</tr>
+		}
+	</tbody>
+</table>
