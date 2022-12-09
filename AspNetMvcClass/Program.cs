@@ -1,5 +1,6 @@
 
 using AspNetMvcClass.Models.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,9 @@ namespace AspNetMvcClass
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
             builder.Services.ConfigureApplicationCookie(config =>
-            {               
-                config.LoginPath = "/User/Login";
-                //config.AccessDeniedPath = "/User/Login";
+            {
+                config.LoginPath = "/User/Login";                
+                config.AccessDeniedPath = "/User/Login";
             });
 
 
@@ -43,13 +44,12 @@ namespace AspNetMvcClass
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+            app.UseStaticFiles();            
             app.UseRouting();
 
-            app.UseAuthorization();
+            
             app.UseAuthentication();
-
+            app.UseAuthorization();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

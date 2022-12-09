@@ -42,25 +42,43 @@
 					}
 					else
 					{
-						<ul class="navbar-nav flex-grow-1">
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Quiz" asp-action="Index"><strong>Menu</strong></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Domande" asp-action="Index"><strong>Domande</strong></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Domande" asp-action="Add"><strong>Aggiungi Domanda</strong></a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="AssignRole"><strong>RoleManager</strong></a>
-							</li>
-						</ul>
-						<ul class="navbar-nav d-flex justify-content-end">
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout"><strong>Logout</strong></a>
-							</li>
-						</ul>
+						@if (User.IsInRole("admin"))
+						{
+							<ul class="navbar-nav flex-grow-1">
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Quiz" asp-action="Index"><strong>Menu</strong></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Domande" asp-action="Index"><strong>Domande</strong></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Domande" asp-action="Add"><strong>Aggiungi Domanda</strong></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="AssignRole"><strong>RoleManager</strong></a>
+								</li>
+							</ul>
+							<ul class="navbar-nav d-flex justify-content-end">
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout"><strong>Logout</strong></a>
+								</li>
+							</ul>
+						}
+						else
+						{
+							<ul class="navbar-nav flex-grow-1">
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Quiz" asp-action="Index"><strong>Menu</strong></a>
+								</li>
+							</ul>
+							<ul class="navbar-nav d-flex justify-content-end">
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout"><strong>Logout</strong></a>
+								</li>
+							</ul>
+						}
+
+						
 					}
 				</div>
 			</div>
