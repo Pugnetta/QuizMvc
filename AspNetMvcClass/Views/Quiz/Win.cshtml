@@ -1,6 +1,6 @@
 ﻿@model AspNetMvcClass.Models.ViewModels.ScoreViewModel
 @{
-    ViewData["Title"] = "FinalScore";
+    ViewData["Title"] = "Risultato";
 }
 <style>
     .score-page {
@@ -22,7 +22,7 @@
         text-align: center;
     }
 </style>
-<h1 class="text-center">Final Score</h1>
+<h1 class="text-center">Congratulazioni!</h1>
 <div class="score-page">
     <div class="card score-card">
         <div class="card-header score-card-header">
@@ -31,11 +31,7 @@
     </div>
 </div>
 <div class="x">
-    <button class="btn btn-primary">Ricomincia</button>
+    <form>
+    <button class="btn btn-primary" asp-action="Index" asp-controller="Quiz">Torna al Menu</button>
+    </form>
 </div>
-@section Scripts {
-<script>
-    $('.x').on('click', function () {
-        window.location.href = '@Url.Action("Index", "Quiz")';
-    });
-</script>}

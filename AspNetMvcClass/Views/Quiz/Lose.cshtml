@@ -1,0 +1,41 @@
+﻿@model AspNetMvcClass.Models.ViewModels.ScoreViewModel
+@{
+	ViewData["Title"] = "Risultato";
+}
+<style>
+	.score-page {
+		padding: 20px;
+		text-align: center;
+	}
+
+	.score-card {
+		margin: 20px auto;
+		max-width: 500px;
+	}
+
+	.score-card-header {
+		font-size: 2em;
+		font-weight: bold;
+		color: #212529;
+	}
+
+	.x {
+		text-align: center;
+	}
+</style>
+<div class="text-center">
+	<h1>Capra!</h1>
+	<h2>Ritenta! Non perdere l'occasione di vincere fantastici premi</h2>
+</div>
+<div class="score-page">
+	<div class="card score-card">
+		<div class="card-header score-card-header">
+			@Model.Score / @Model.TotalQuestions
+		</div>
+	</div>
+</div>
+<div class="x">
+	<form>
+		<button class="btn btn-primary" asp-action="Index" asp-controller="Quiz">Torna al Menu</button>
+	</form>
+</div>

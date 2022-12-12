@@ -85,36 +85,36 @@ public class UserController : Controller
     {
         return View();
     }
-    [HttpPost]
-    public async Task<IActionResult> AssignRole(string userEmail, string roleName)
-    {
-        // Get the user and the role using the email address and role name
-        var user = await userManager.FindByEmailAsync(userEmail);
-        var role = await roleManager.FindByNameAsync(roleName);
-        if (role == null)
-        {
-            await roleManager.CreateAsync(new IdentityRole { Name = $"{roleName}" });
-        }
+    //[HttpPost]
+    //public async Task<IActionResult> AssignRole(string userEmail, string roleName)
+    //{
+    //    // Get the user and the role using the email address and role name
+    //    var user = await userManager.FindByEmailAsync(userEmail);
+    //    var role = await roleManager.FindByNameAsync(roleName);
+    //    if (role == null)
+    //    {
+    //        await roleManager.CreateAsync(new IdentityRole { Name = $"{roleName}" });
+    //    }
 
-        // Add the user to the role
-        var result = await userManager.AddToRoleAsync(user, roleName);
+    //    // Add the user to the role
+    //    var result = await userManager.AddToRoleAsync(user, roleName);
 
-        // Check if the operation was successful
-        if (result.Succeeded)
-        {
-            // The user was added to the role
-        }
-        else
-        {
-            // There was an error adding the user to the role
-        }
-        return RedirectToAction("Login");
-        //Task.Run(async () =>
-        //{
-        //    await roleManager.CreateAsync(new IdentityRole { Name = "admin" });
-        //    await AssignRole("ex@gmail.com", "admin");
-        //});
-    }
+    //    // Check if the operation was successful
+    //    if (result.Succeeded)
+    //    {
+    //        // The user was added to the role
+    //    }
+    //    else
+    //    {
+    //        // There was an error adding the user to the role
+    //    }
+    //    return RedirectToAction("Login");
+    //    //Task.Run(async () =>
+    //    //{
+    //    //    await roleManager.CreateAsync(new IdentityRole { Name = "admin" });
+    //    //    await AssignRole("ex@gmail.com", "admin");
+    //    //});
+    //}
 
     //private async Task MasterLogin(LoginViewModel model)
     //{

@@ -160,8 +160,16 @@ public class QuizController : Controller
                     Score = gameSession.Score,
                     TotalQuestions = gameSession.CurrentQuestionIndex
                 };
-
-                return View(scoreModel);
+                int res = (int)(gameSession.Score * 0.75);
+                if (res < gameSession.Score)
+                {
+                    return View("Win", scoreModel);
+                }
+                else
+                {
+                    return View("Lose", scoreModel);
+                }
+                
             }
         }
 
