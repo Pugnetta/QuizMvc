@@ -1,7 +1,7 @@
-﻿@model Int32
+﻿@model AspNetMvcClass.Models.ViewModels.ScoreViewModel
 @{
     ViewData["Title"] = "FinalScore";
- }
+}
 <style>
     .score-page {
         padding: 20px;
@@ -18,13 +18,24 @@
         font-weight: bold;
         color: #212529;
     }
+    .x{
+        text-align: center;
+    }
 </style>
 <h1 class="text-center">Final Score</h1>
 <div class="score-page">
     <div class="card score-card">
         <div class="card-header score-card-header">
-           @Model
+            @Model.Score / @Model.TotalQuestions
         </div>
     </div>
 </div>
-
+<div class="x">
+    <button class="btn btn-primary">Ricomincia</button>
+</div>
+@section Scripts {
+<script>
+    $('.x').on('click', function () {
+        window.location.href = '@Url.Action("Index", "Quiz")';
+    });
+</script>}

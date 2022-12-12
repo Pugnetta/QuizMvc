@@ -12,5 +12,5 @@ public class AuthDbContext: IdentityDbContext
     }
     public DbSet<Domanda> Domande { get; set; }
     public DbSet<CdTimer> Timers { get; set; }
-    //public DbSet<GameSession> GameSessions { get; set; }
+    public DbSet<GameSession> GameSessions { get; set; }
 }

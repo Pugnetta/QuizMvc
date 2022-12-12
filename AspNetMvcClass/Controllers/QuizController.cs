@@ -3,103 +3,187 @@
 using AspNetMvcClass.Models.Data;
 using AspNetMvcClass.Models.Domain;
 using AspNetMvcClass.Models.ViewModels;
+using Azure.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
+using static System.Net.WebRequestMethods;
 
 namespace AspNetMvcClass.Controllers;
 
 public class QuizController : Controller
 {
     private readonly AuthDbContext dbContext;
-    private readonly List<Domanda> _domande;        
-    //private readonly IHttpContextAccessor _httpContextAccessor;
-    //var user = _httpContextAccessor.HttpContext.User;
-    //var userName = user.Identity.Name;
-
+    
     public QuizController(AuthDbContext dbContext)
     {
-        this.dbContext = dbContext;
-        _domande = dbContext.Domande.ToList();            
+        this.dbContext = dbContext;       
     }
 
+    [HttpGet]
     public IActionResult Index()
-    {         
-        
+    {
         return View();
     }
 
+
     [HttpGet]
-    public IActionResult Start()
+    public async Task<IActionResult> InitializeQuizSession()
     {
-        // Check if this is the first time the user has visited the quiz page
-        if (HttpContext.Session.GetInt32("currentQuestionIndex") == null)
+        // Check if the game session ID exists in the user's session.
+        var gameSessionId = GetGameSessionId();
+        // Check if the game session with the specified ID exists in the database.
+        var gameSessionExists = await dbContext.GameSessions.AnyAsync(gs => gs.Id == gameSessionId);
+        if (gameSessionId.HasValue && gameSessionExists)
         {
-            // If it is, initialize the current question index and score to 0
-            HttpContext.Session.SetInt32("currentQuestionIndex", 0);
-            HttpContext.Session.SetInt32("score", 0);
+            return BadRequest();
         }
-        int currentQuestionIndex = HttpContext.Session.GetInt32("currentQuestionIndex").Value;           
-
-        // Get the current question using the index
-        var currentQuestion = _domande[currentQuestionIndex];
-
-        // Return the view as usual
-        return View(currentQuestion);
-    }
-    [HttpPost]
-    public IActionResult Start(string selectedAnswer)
-    {
-        // Get the current question index and score from the user's session
-        int currentQuestionIndex = HttpContext.Session.GetInt32("currentQuestionIndex").Value;
-        int score = HttpContext.Session.GetInt32("score").Value;
-
-        // Check if the selected answer is correct
-        if (selectedAnswer == _domande[currentQuestionIndex].RispostaEsatta)
-        {
-            score++;
-        }
-
-        // Update the current question index and score in the user's session
-        HttpContext.Session.SetInt32("currentQuestionIndex", currentQuestionIndex + 1);
-        HttpContext.Session.SetInt32("score", score);
-
-        if (currentQuestionIndex + 1 == _domande.Count)
-        {
-            // If all the questions have been answered, redirect to the Score action
-            return RedirectToAction("Score");
+        string? userName = null;
+        if (User.Identity.IsAuthenticated)
+        {           
+            userName = User.Identity.Name;
         }
         else
-        {
-            // If there are more questions, redirect to the Start action
-            return RedirectToAction("Start");
+        {            
+            userName = "Anonymous";
         }
+        var gameSession = new GameSession()
+        {
 
+            CurrentQuestionIndex = 0,
+            Score = 0,
+            UserId = userName,
+            CreatedAt = DateTime.Now,
+            Questions = await dbContext.Domande
+            .OrderBy(y => Guid.NewGuid())
+            .Take(2)
+            .ToListAsync()
+        };
+       
+        await dbContext.GameSessions.AddAsync(gameSession);
+        await dbContext.SaveChangesAsync();
+
+        // Store the game session ID in the user's session.
+        HttpContext.Session.SetInt32("gameSession", gameSession.Id);
+
+        return RedirectToAction("QuizViews");
     }
 
     [HttpGet]
-    public IActionResult Score()
+    public async Task<IActionResult> QuizViews()
     {
-        // Get the current score from the user's session
-        int score = HttpContext.Session.GetInt32("score").Value;
-
-        // Get the current question index from the user's session
-        int currentQuestionIndex = HttpContext.Session.GetInt32("currentQuestionIndex").Value;
-
-        if (currentQuestionIndex >= _domande.Count)
+        var gameSessionId = GetGameSessionId();
+        if (gameSessionId.HasValue)
         {
-            // If all the questions have been answered, reset the current question index and score in the user's session
-            HttpContext.Session.SetInt32("currentQuestionIndex", 0);
-            HttpContext.Session.SetInt32("score", 0);
+            // Retrieve the game session from the database.
+            var gameSession = await dbContext.GameSessions
+                .Include(gs => gs.Questions)
+                .SingleOrDefaultAsync(gs => gs.Id == gameSessionId);
+
+            if (gameSession != null && gameSession.CurrentQuestionIndex < gameSession.Questions.Count)
+            {               
+                var currentQuestion = gameSession.Questions[gameSession.CurrentQuestionIndex];
+                return View(currentQuestion);
+            }
+            else
+            {                
+                if (gameSession.CurrentQuestionIndex == gameSession.Questions.Count)
+                {                    
+                    return RedirectToAction("Score");
+                }
+            }
+        }
+
+        return BadRequest();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> QuizViews(string answer)
+    {
+       
+        var gameSessionId = GetGameSessionId();
+        
+        if (gameSessionId.HasValue)
+        {
+            
+            var gameSession = await dbContext.GameSessions
+                .Include(gs => gs.Questions)
+                .SingleOrDefaultAsync(gs => gs.Id == gameSessionId);
+            
+            if (gameSession != null && gameSession.CurrentQuestionIndex < gameSession.Questions.Count)
+            {                
+                var currentQuestion = gameSession.Questions[gameSession.CurrentQuestionIndex];
+                var userAnswer = answer;
+                
+                if (userAnswer == currentQuestion.RispostaEsatta)
+                {                    
+                    gameSession.Score++;
+                }
+                
+                gameSession.CurrentQuestionIndex++;
+               
+                dbContext.GameSessions.Update(gameSession);
+                await dbContext.SaveChangesAsync();
+                
+                return RedirectToAction("QuizViews");
+            }
+        }
+
+        return BadRequest();
+    }
+
+
+
+
+
+    [HttpGet]
+    public async Task<IActionResult> Score()
+    {
+       
+        var gameSessionId = GetGameSessionId();
+        //Rest user session
+        HttpContext.Session.Remove("gameSession");
+        
+        if (gameSessionId.HasValue)
+        {            
+            var gameSession = await dbContext.GameSessions
+                .SingleOrDefaultAsync(gs => gs.Id == gameSessionId);
 
             
-            return View(score);
-        }
-        else
-        {
-            // If not all the questions have been answered, redirect to the error page
-            return RedirectToAction("Error", "Home");
+            if (gameSession != null)
+            {
+                ScoreViewModel scoreModel = new ScoreViewModel
+                {
+                    Score = gameSession.Score,
+                    TotalQuestions = gameSession.CurrentQuestionIndex
+                };
+
+                return View(scoreModel);
+            }
         }
 
+        return BadRequest();
     }
 
+
+
+    //private async Task<GameSession> GetGameSessionForUserAsync()
+    //{
+    //    int? gameSessionId = GetGameSessionId();
+    //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    //    return await dbContext.GameSessions
+    //        .Include(x => x.Questions)
+    //        .FirstOrDefaultAsync(x => x.Id == gameSessionId.Value && x.UserId == userId);
+    //}
+
+    private int? GetGameSessionId()
+    {
+       return HttpContext.Session.GetInt32("gameSession");
+       
+    }
 }
+
+
