@@ -25,6 +25,7 @@ public class QuizController : Controller
     [HttpGet]
     public IActionResult Index()
     {
+        HttpContext.Session.Remove("gameSession");
         return View();
     }
 
