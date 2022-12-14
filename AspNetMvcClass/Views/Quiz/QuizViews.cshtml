@@ -11,6 +11,23 @@
     .quiz-game-card {
         margin: 20px 0;
     }
+
+    h1 {
+        font-size: 38px;
+        text-align: center;
+    }
+
+    .big-btn {
+        margin: 3px;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        display: block;
+        overflow: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 </style>
 
 <div class="quiz-game-page">
@@ -19,26 +36,22 @@
             <h3>@Model.Question</h3>
         </div>
         <div class="card-body">
-            <form method="post" action="QuizViews" class="form">
-
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="answer" value="@Model.Risposta1">
-                    <label class="form-check-label">@Model.Risposta1</label>
+            <div class="main-content">
+                <div class="grid-container">
+                    <form method="post" asp-controller="Quiz" asp-action="QuizViews">
+                        <input type="hidden" name="answer" id="answerInput" />
+                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta1'); this.form.submit()">@Model.Risposta1</button>
+                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta2'); this.form.submit()">@Model.Risposta2</button>
+                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta3'); this.form.submit()">@Model.Risposta3</button>
+                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta4'); this.form.submit()">@Model.Risposta4</button>
+                    </form>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="answer" value="@Model.Risposta2">
-                    <label class="form-check-label">@Model.Risposta2</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="answer" value="@Model.Risposta3">
-                    <label class="form-check-label">@Model.Risposta3</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="answer" value="@Model.Risposta4">
-                    <label class="form-check-label">@Model.Risposta4</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Ok</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    function setAnswer(answer) {
+        document.getElementById('answerInput').value = answer;
+    }
+</script>
