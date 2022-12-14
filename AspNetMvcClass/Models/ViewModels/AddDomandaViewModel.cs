@@ -22,5 +22,7 @@ namespace AspNetMvcClass.Models
         [Display(Name = "Risposta Esatta")]
         [Required(ErrorMessage = "Campo necessario")]
         public string RispostaEsatta { get; set; }
+        [Display(Name = "Categoria")]
+        public string? Categoria { get; set; }
     }
 }

@@ -54,7 +54,8 @@ public class DomandeController : Controller
                 Risposta2 = viewModel.Risposta2,
                 Risposta3 = viewModel.Risposta3,
                 Risposta4 = viewModel.Risposta4,
-                RispostaEsatta = viewModel.RispostaEsatta
+                RispostaEsatta = viewModel.RispostaEsatta,
+                Categoria = viewModel.Categoria?.ToLower()
             };
 
             await dbContext.Domande.AddAsync(domanda);
@@ -82,8 +83,9 @@ public class DomandeController : Controller
                 Risposta2 = editDomanda.Risposta2,
                 Risposta3 = editDomanda.Risposta3,
                 Risposta4 = editDomanda.Risposta4,
-                RispostaEsatta = editDomanda.RispostaEsatta
-            };
+                RispostaEsatta = editDomanda.RispostaEsatta,
+                Categoria = editDomanda.Categoria?.ToLower()
+        };
 
             return await Task.Run(() => View("View", viewModel));
         }
@@ -113,6 +115,7 @@ public class DomandeController : Controller
             domanda.Risposta3 = viewModel.Risposta3;
             domanda.Risposta4 = viewModel.Risposta4;
             domanda.RispostaEsatta = viewModel.RispostaEsatta;
+            domanda.Categoria = viewModel.Categoria?.ToLower();
 
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");

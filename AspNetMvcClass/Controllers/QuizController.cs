@@ -30,8 +30,8 @@ public class QuizController : Controller
     }
 
 
-    [HttpGet]
-    public async Task<IActionResult> InitializeQuizSession()
+    [HttpPost]
+    public async Task<IActionResult> InitializeQuizSession(string? category)
     {
         // Check if the game session ID exists in the user's session.
         var gameSessionId = GetGameSessionId();
@@ -49,17 +49,18 @@ public class QuizController : Controller
         else
         {            
             userName = "Anonymous";
-        }
+        }            
+        
         var gameSession = new GameSession()
         {
-
             CurrentQuestionIndex = 0,
             Score = 0,
             UserId = userName,
             CreatedAt = DateTime.Now,
             Questions = await dbContext.Domande
+            .Where(d => d.Categoria == category)
             .OrderBy(y => Guid.NewGuid())
-            .Take(2)
+            .Take(8)
             .ToListAsync()
         };
        

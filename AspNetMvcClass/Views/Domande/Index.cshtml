@@ -11,6 +11,7 @@
 			<th>Id</th>
 			<th>Domanda</th>
 			<th>Risposta Esatta</th>
+			<th>Categoria</th>
 			<th></th>
 			
 		</tr>
@@ -22,6 +23,7 @@
 				<td>@domanda.Id</td>
 				<td>@domanda.Question</td>				
 				<td>@domanda.RispostaEsatta</td>
+				<td>@domanda.Categoria</td>
 				<td class="text-end">@Html.ActionLink("Modifica", "View", domanda)</td>
 			</tr>
 		}

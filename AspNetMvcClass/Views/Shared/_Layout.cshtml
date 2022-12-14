@@ -97,25 +97,23 @@
 	</footer>
 	<script>
 		// Set the countdown duration in seconds
-		var countdownDuration = 900; // 15 minutes
+var countdownDuration = 900; // 15 minutes
 
-		// Update the countdown every 1 second
-		var countdownInterval = setInterval(function () {
-			// Calculate the time remaining in seconds
-			var timeRemaining = countdownDuration - 1;
+// Update the countdown every 1 second
+var countdownInterval = setInterval(function () {
+  // Make an AJAX request to get the current countdown time from the server
+  $.get("/cdtimer", function (data) {
+    // Update the countdown element with the time remaining
+    document.getElementById("countdown").innerHTML = data.remainingDuration;
 
-			// Update the countdown element with the time remaining
-			document.getElementById("countdown").innerHTML = timeRemaining;
+    // If the countdown is complete, clear the interval and display a message
+    if (data.remainingDuration == 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("countdown").innerHTML = "Event!";
+    }
+  });
+}, 1000);
 
-			// If the countdown is complete, clear the interval and display a message
-			if (timeRemaining == 0) {
-				clearInterval(countdownInterval);
-				document.getElementById("countdown").innerHTML = "Event!";
-			}
-
-			// Decrement the countdown duration
-			countdownDuration--;
-		}, 1000);
 	</script>
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,23 +1,15 @@
 ﻿@{
 	ViewData["Title"] = "QuizMenu";
-
 }
+
 <style>
     h1 {
         font-size: 38px;
         text-align: center;
-    }
-
-    .m-bottom {
-        margin-bottom: 100px;
-    }
-
-    .tall-boy {
-        height: 50%
-    }
+	}
 
     .big-btn {
-        margin: 0px;
+        margin: 3px;
         height: 100%;
         width: 100%;
         text-align: center;
@@ -27,40 +19,33 @@
         margin-right: auto;
     }
 
-    .wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 200px;
-        grid-gap: 10px;
-    }   
-
-    .big-btn:hover {
-        cursor: pointer;
-        color: #3498db;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
+ 
+ 
 </style>
+
 <body class="bg-img-ambiente2">
-    <header>
-        <div class="container m-bottom">
-            <h1 class="text-light">Metti alla prova le tue conoscenze</h1>
-            <h1 class="text-light">ed ottieni straordinari <strong>PREMI!!</strong></h1>
-        </div>
-    </header>
-    <div class="m-bottom"></div>
-    <div class="wrapper">
-        <div><button class="big-btn bg-img-ambiente">Quiz 1</button></div>
-        <div><button class="big-btn bg-img-ambiente">Quiz 2</button></div>
-        <div><button class="big-btn bg-img-ambiente">Quiz 3</button></div>
-        <div><button class="big-btn bg-img-ambiente">Quiz 4</button></div>
-    </div>
+	<header>
+		<div class="container">
+			<h1 class="text-light">Metti alla prova le tue conoscenze</h1>
+			<h1 class="text-light">ed ottieni straordinari <strong>PREMI!!</strong></h1>
+		</div>
+	</header>	
+
+	<div class="main-content">
+		<div class="grid-container">
+			<form method="post" asp-controller="Quiz" asp-action="InitializeQuizSession">
+				<input type="hidden" name="category" id="categoryInput" />
+                <button class="big-btn gradient-button gradient-button-1" onclick="setCategory('matematica'); this.form.submit()">Matematica</button>
+                <button class="big-btn gradient-button gradient-button-1" onclick="setCategory('geografia'); this.form.submit()">Geografia</button>
+                <button class="big-btn gradient-button gradient-button-1" onclick="setCategory('scienza'); this.form.submit()">Scienza</button>
+                <button class="big-btn gradient-button gradient-button-1" onclick="setCategory(category: null); this.form.submit()">Generale</button>
+			</form>
+		</div>
+	</div>
 </body>
-@section Scripts {
+
 <script>
-$('.big-btn').on('click', function() {
-window.location.href = '@Url.Action("InitializeQuizSession", "Quiz")';
-});
+	function setCategory(category) {
+		document.getElementById('categoryInput').value = category;
+	}
 </script>
-}
-
-
