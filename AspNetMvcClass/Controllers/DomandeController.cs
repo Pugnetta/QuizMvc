@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetMvcClass.Controllers;
 
-[Authorize(Roles ="admin")]
+[Authorize(Roles = "admin")]
 public class DomandeController : Controller
 {
     private readonly AuthDbContext dbContext;
@@ -17,7 +17,7 @@ public class DomandeController : Controller
     public DomandeController(AuthDbContext dbContext)
     {
         this.dbContext = dbContext;
-    }    
+    }
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -45,7 +45,7 @@ public class DomandeController : Controller
             if (!answerList.Contains(viewModel.RispostaEsatta))
             {
                 ModelState.AddModelError("RispostaEsatta", "Deve corrispondere ad almeno una delle altre risposte");
-                return await Task.Run(() => View("Add", viewModel));
+                return View("Add", viewModel);
             }
             var domanda = new Domanda()
             {
@@ -69,9 +69,9 @@ public class DomandeController : Controller
 
     }
     [HttpGet]
-    public async Task<IActionResult> View(Domanda domanda)
+    public async Task<IActionResult> View(int id)
     {
-        int id = domanda.Id;
+       
         var editDomanda = await dbContext.Domande.FirstOrDefaultAsync(x => x.Id == id);
         if (editDomanda != null)
         {
@@ -85,9 +85,9 @@ public class DomandeController : Controller
                 Risposta4 = editDomanda.Risposta4,
                 RispostaEsatta = editDomanda.RispostaEsatta,
                 Categoria = editDomanda.Categoria?.ToLower()
-        };
+            };
 
-            return await Task.Run(() => View("View", viewModel));
+            return View("View", viewModel);
         }
         return RedirectToAction("Index");
     }
@@ -106,7 +106,7 @@ public class DomandeController : Controller
             if (!answerList.Contains(viewModel.RispostaEsatta))
             {
                 ModelState.AddModelError("RispostaEsatta", "Deve corrispondere ad almeno una delle altre risposte");
-                return await Task.Run(() => View("View", viewModel));
+                return View("View", viewModel);
             }
             var domanda = await dbContext.Domande.FindAsync(viewModel.Id);
             domanda.Question = viewModel.Question;
@@ -123,7 +123,7 @@ public class DomandeController : Controller
         }
         else
         {
-            return await Task.Run(() => View("View", viewModel));
+            return View("View", viewModel);
         }
 
     }

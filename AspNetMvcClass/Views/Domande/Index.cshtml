@@ -24,7 +24,7 @@
 				<td>@domanda.Question</td>				
 				<td>@domanda.RispostaEsatta</td>
 				<td>@domanda.Categoria</td>
-				<td class="text-end">@Html.ActionLink("Modifica", "View", domanda)</td>
+				<td class="text-end">@Html.ActionLink("Modifica", "View", new { id = domanda.Id })</td>
 			</tr>
 		}
 	</tbody>
