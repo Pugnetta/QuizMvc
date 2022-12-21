@@ -50,7 +50,7 @@ public class UserController : Controller
             }
 
         }
-        return await Task.Run(() => View("Register", model));
+        return View("Register", model);
     }
 
     [HttpGet]
@@ -71,7 +71,7 @@ public class UserController : Controller
             }
             ModelState.AddModelError("", "Email o Password incorretta");
         }
-        return await Task.Run(() => View("Login", model));
+        return View("Login", model);
     }
 
     [HttpGet]
