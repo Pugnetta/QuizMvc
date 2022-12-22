@@ -50,19 +50,8 @@ public class DomandeController : Controller
                 ModelState.AddModelError("RispostaEsatta", "Deve corrispondere ad almeno una delle altre risposte");
                 return View("Add", viewModel);
             }
-            var domanda = new Domanda()
-            {
-                Question = viewModel.Question,
-                Risposta1 = viewModel.Risposta1,
-                Risposta2 = viewModel.Risposta2,
-                Risposta3 = viewModel.Risposta3,
-                Risposta4 = viewModel.Risposta4,
-                RispostaEsatta = viewModel.RispostaEsatta,
-                Categoria = viewModel.Categoria?.ToLower()
-            };
-
-            await dbContext.Domande.AddAsync(domanda);
-            await dbContext.SaveChangesAsync();
+            await services.Add(viewModel);
+            TempData["SuccessMessage"] = "La domanda è stata aggiunta correttamente.";
             return RedirectToAction("Add");
         }
         else
@@ -131,7 +120,7 @@ public class DomandeController : Controller
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        return RedirectToAction("Index");
+        return BadRequest("Index");
     }
 
 }
