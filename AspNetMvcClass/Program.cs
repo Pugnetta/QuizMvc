@@ -1,5 +1,6 @@
 
 using AspNetMvcClass.Models.Data;
+using AspNetMvcClass.Services.DomandeServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace AspNetMvcClass
                 config.LoginPath = "/User/Login";                
                 config.AccessDeniedPath = "/User/Login";
             });
-
+            builder.Services.AddScoped<IDomandeServices, DomandeService>();
             builder.Services.AddSession();
 
 

@@ -2,6 +2,7 @@
 using AspNetMvcClass.Models;
 using AspNetMvcClass.Models.Data;
 using AspNetMvcClass.Models.Domain;
+using AspNetMvcClass.Services.DomandeServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +14,17 @@ namespace AspNetMvcClass.Controllers;
 public class DomandeController : Controller
 {
     private readonly AuthDbContext dbContext;
+    private readonly IDomandeServices services;
 
-    public DomandeController(AuthDbContext dbContext)
+    public DomandeController(AuthDbContext dbContext, IDomandeServices domandeServices)
     {
         this.dbContext = dbContext;
+        this.services = domandeServices;
     }
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var domande = await dbContext.Domande.ToListAsync();
+        var domande = await services.GetAll();
         return View(domande);
     }
     [HttpGet]
@@ -60,8 +63,7 @@ public class DomandeController : Controller
 
             await dbContext.Domande.AddAsync(domanda);
             await dbContext.SaveChangesAsync();
-			TempData["SuccessMessage"] = "Domanda aggiunta con successo!";
-			return RedirectToAction("Add");
+            return RedirectToAction("Add");
         }
         else
         {
@@ -73,7 +75,7 @@ public class DomandeController : Controller
     public async Task<IActionResult> View(int id)
     {
        
-        var editDomanda = await dbContext.Domande.FirstOrDefaultAsync(x => x.Id == id);
+        var editDomanda = await services.GetById(id);
         if (editDomanda != null)
         {
             var viewModel = new EditDomandaViewModel
@@ -90,7 +92,7 @@ public class DomandeController : Controller
 
             return View("View", viewModel);
         }
-        return RedirectToAction("Index");
+        return NotFound();
     }
     [HttpPost]
     public async Task<IActionResult> View(EditDomandaViewModel viewModel)
@@ -109,16 +111,7 @@ public class DomandeController : Controller
                 ModelState.AddModelError("RispostaEsatta", "Deve corrispondere ad almeno una delle altre risposte");
                 return View("View", viewModel);
             }
-            var domanda = await dbContext.Domande.FindAsync(viewModel.Id);
-            domanda.Question = viewModel.Question;
-            domanda.Risposta1 = viewModel.Risposta1;
-            domanda.Risposta2 = viewModel.Risposta2;
-            domanda.Risposta3 = viewModel.Risposta3;
-            domanda.Risposta4 = viewModel.Risposta4;
-            domanda.RispostaEsatta = viewModel.RispostaEsatta;
-            domanda.Categoria = viewModel.Categoria?.ToLower();
-
-            await dbContext.SaveChangesAsync();
+            await services.Update(viewModel);
             return RedirectToAction("Index");
 
         }
@@ -138,7 +131,7 @@ public class DomandeController : Controller
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        return BadRequest();
+        return RedirectToAction("Index");
     }
 
 }
