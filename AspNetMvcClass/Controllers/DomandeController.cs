@@ -47,21 +47,8 @@ public class DomandeController : Controller
                 ModelState.AddModelError("RispostaEsatta", "Deve corrispondere ad almeno una delle altre risposte");
                 return View("Add", viewModel);
             }
-            var domanda = new Domanda()
-            {
-                Question = viewModel.Question,
-                Risposta1 = viewModel.Risposta1,
-                Risposta2 = viewModel.Risposta2,
-                Risposta3 = viewModel.Risposta3,
-                Risposta4 = viewModel.Risposta4,
-                RispostaEsatta = viewModel.RispostaEsatta,
-                Categoria = viewModel.Categoria?.ToLower()
-            };
-
-            await dbContext.Domande.AddAsync(domanda);
-            await dbContext.SaveChangesAsync();
-			TempData["SuccessMessage"] = "Domanda aggiunta con successo!";
-			return RedirectToAction("Add");
+            await services.Add(viewModel);
+            return RedirectToAction("Add");
         }
         else
         {
@@ -131,14 +118,8 @@ public class DomandeController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(EditDomandaViewModel viewModel)
     {
-        var domanda = await dbContext.Domande.FindAsync(viewModel.Id);
-        if (domanda != null)
-        {
-            dbContext.Domande.Remove(domanda);
-            await dbContext.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-        return BadRequest();
+        await services.Delete(viewModel);
+        return RedirectToAction("Index");
     }
 
 }
