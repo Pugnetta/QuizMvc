@@ -49,4 +49,11 @@
 		<span class="text-danger" asp-validation-for="Categoria"></span>
 	</div>
 	<button type="submit" class="btn btn-primary">Crea Domanda</button>
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success my-3">
+			@TempData["SuccessMessage"]
+		</div>
+	}
+
 </form>

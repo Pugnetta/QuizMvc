@@ -60,7 +60,8 @@ public class DomandeController : Controller
 
             await dbContext.Domande.AddAsync(domanda);
             await dbContext.SaveChangesAsync();
-            return RedirectToAction("Add");
+			TempData["SuccessMessage"] = "Domanda aggiunta con successo!";
+			return RedirectToAction("Add");
         }
         else
         {
@@ -137,7 +138,7 @@ public class DomandeController : Controller
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        return RedirectToAction("Index");
+        return BadRequest();
     }
 
 }
