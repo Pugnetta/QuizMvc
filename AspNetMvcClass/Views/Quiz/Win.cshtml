@@ -18,20 +18,19 @@
         font-weight: bold;
         color: #212529;
     }
-    .x{
-        text-align: center;
-    }
+    
 </style>
-<h1 class="text-center">Congratulazioni!</h1>
+
 <div class="score-page">
+<h1>Congratulazioni!</h1>
     <div class="card score-card">
         <div class="card-header score-card-header">
             @Model.Score / @Model.TotalQuestions
         </div>
     </div>
-</div>
-<div class="x">
     <form>
     <button class="btn btn-primary" asp-action="Index" asp-controller="Quiz">Torna al Menu</button>
     </form>
 </div>
+
+

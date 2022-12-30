@@ -1,57 +1,42 @@
 ﻿@model AspNetMvcClass.Models.Domain.Domanda
 
 @{
-    ViewBag.Title = "Quiz";
+	ViewBag.Title = "Quiz";
 }
 <style>
-    .quiz-game-page {
-        padding: 20px;
-    }
+	
 
-    .quiz-game-card {
-        margin: 20px 0;
-    }
-
-    h1 {
-        font-size: 38px;
-        text-align: center;
-    }
-
-    .big-btn {
-        margin: 3px;
-        height: 100%;
-        width: 100%;
-        text-align: center;
-        display: block;
-        overflow: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
+	.big-btn {
+		margin: 3px;
+		height: 100%;
+		width: 100%;
+		text-align: center;
+		display: block;
+		overflow: auto;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
 </style>
 
 <div class="quiz-game-page">
-    <div class="card quiz-game-card">
-        <div class="card-header">
-            <h3>@Model.Question</h3>
-        </div>
-        <div class="card-body">
-            <div class="main-content">
-                <div class="grid-container">
-                    <form method="post" asp-controller="Quiz" asp-action="QuizViews">
-                        <input type="hidden" name="answer" id="answerInput" />
-                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta1'); this.form.submit()">@Model.Risposta1</button>
-                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta2'); this.form.submit()">@Model.Risposta2</button>
-                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta3'); this.form.submit()">@Model.Risposta3</button>
-                        <button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta4'); this.form.submit()">@Model.Risposta4</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="card-header mb-3">
+			<h3>@Model.Question</h3>
+		</div>
+		<div class="">
+			<form method="post" asp-controller="Quiz" asp-action="QuizViews">
+				<input type="hidden" name="answer" id="answerInput" />
+				<button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta1'); this.form.submit()">@Model.Risposta1</button>
+				<button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta2'); this.form.submit()">@Model.Risposta2</button>
+				<button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta3'); this.form.submit()">@Model.Risposta3</button>
+				<button class="big-btn gradient-button gradient-button-1" onclick="setAnswer('@Model.Risposta4'); this.form.submit()">@Model.Risposta4</button>
+			</form>
+		</div>
+	</div>
 </div>
 <script>
-    function setAnswer(answer) {
-        document.getElementById('answerInput').value = answer;
-    }
+	function setAnswer(answer) {
+		document.getElementById('answerInput').value = answer;
+	}
 </script>
