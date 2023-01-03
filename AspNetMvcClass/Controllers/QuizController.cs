@@ -161,8 +161,8 @@ public class QuizController : Controller
                     Score = gameSession.Score,
                     TotalQuestions = gameSession.CurrentQuestionIndex
                 };
-                int res = (int)(gameSession.Score * 0.75);
-                if (res < gameSession.Score)
+                int winPointsNeeded = (int)(gameSession.CurrentQuestionIndex * 0.75);
+                if (winPointsNeeded <= gameSession.Score)
                 {
                     return View("Win", scoreModel);
                 }
